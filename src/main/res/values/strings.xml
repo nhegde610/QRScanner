@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">QR Code</string>
+    <string name="open_url">Open URL?</string>
+    <string name="Open">open</string>
+    <string name="open">open</string>
+    <string name="cancel">cancel</string>
+    <string name="url">result.content()</string>
 </resources>

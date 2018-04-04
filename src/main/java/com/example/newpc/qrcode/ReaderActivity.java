@@ -2,11 +2,14 @@ package com.example.newpc.qrcode;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.net.Uri;
+import android.view.View;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -41,7 +44,15 @@ public class ReaderActivity extends AppCompatActivity {
                 Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else {
-                Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+                    try { //Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+                        super.onActivityResult(requestCode,resultCode,data);
+                            String UrlFromScan = result.getContents();
+                            DialogFragment newFragment = AlertUrlDialog.newInstance(UrlFromScan);
+                            newFragment.show(getSupportFragmentManager(), "url");
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
+                    }
             }
         }
         else {
