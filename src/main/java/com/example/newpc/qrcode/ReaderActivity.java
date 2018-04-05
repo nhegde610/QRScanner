@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import android.net.Uri;
-import android.view.View;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -27,6 +25,7 @@ public class ReaderActivity extends AppCompatActivity {
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+                integrator.setCaptureActivity(CaptureActivityPotrait.class);
                 integrator.setPrompt("Scan");
                 integrator.setCameraId(0);
                 integrator.setBeepEnabled(false);
@@ -44,11 +43,12 @@ public class ReaderActivity extends AppCompatActivity {
                 Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
             }
             else {
-                    try { //Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
-                        super.onActivityResult(requestCode,resultCode,data);
-                            String UrlFromScan = result.getContents();
-                            DialogFragment newFragment = AlertUrlDialog.newInstance(UrlFromScan);
-                            newFragment.show(getSupportFragmentManager(), "url");
+                    try {
+                            super.onActivityResult(requestCode,resultCode,data);
+                            String DataFromScan = result.getContents();
+                            DialogFragment newFragment = AlertUrlDialog.newInstance(DataFromScan);
+                            newFragment.show(getSupportFragmentManager(), "DataFromScan");
+
                     }catch(Exception e){
                         e.printStackTrace();
                         Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();

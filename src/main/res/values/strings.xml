@@ -5,4 +5,8 @@
     <string name="open">open</string>
     <string name="cancel">cancel</string>
     <string name="url">result.content()</string>
+    <string name="choose_title">Open URL with</string>
+    <string name="Title">Data from Scan</string>
+    <string name="copy">Copy text</string>
+    <string name="display_text">Copied Text</string>
 </resources>
