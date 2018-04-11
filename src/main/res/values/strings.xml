@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QR Code</string>
+    <string name="app_name">SPRY Scanner</string>
     <string name="open_url">Open URL?</string>
     <string name="Open">open</string>
     <string name="open">open</string>
@@ -9,4 +9,6 @@
     <string name="Title">Data from Scan</string>
     <string name="copy">Copy text</string>
     <string name="display_text">Copied Text</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

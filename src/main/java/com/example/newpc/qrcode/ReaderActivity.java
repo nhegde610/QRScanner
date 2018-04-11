@@ -14,6 +14,9 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class ReaderActivity extends AppCompatActivity {
     private Button scan_btn;
+
+    boolean isurl = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +40,7 @@ public class ReaderActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if(result != null){
             if(result.getContents()==null){
@@ -46,9 +50,14 @@ public class ReaderActivity extends AppCompatActivity {
                     try {
                             super.onActivityResult(requestCode,resultCode,data);
                             String DataFromScan = result.getContents();
-                            DialogFragment newFragment = AlertUrlDialog.newInstance(DataFromScan);
-                            newFragment.show(getSupportFragmentManager(), "DataFromScan");
-
+                            validate(DataFromScan);
+                            if(isurl){
+                                StartRedirectService(DataFromScan);
+                            }
+                            else {
+                                DialogFragment TextFragment = AlertTextDialog.newInstance(DataFromScan);
+                                TextFragment.show(getSupportFragmentManager(), "DataFromScan");
+                            }
                     }catch(Exception e){
                         e.printStackTrace();
                         Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
@@ -58,5 +67,18 @@ public class ReaderActivity extends AppCompatActivity {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void StartRedirectService(String url) {
+        Intent RedirectCheck = new Intent(this, RedirectService.class);
+        RedirectCheck.putExtra("url", url);
+        this.startService(RedirectCheck);
+    }
+
+    private void validate(String Data){
+        if(CheckData.isDataUrl(Data))
+            isurl= true;
+        else
+            isurl = false;
     }
 }

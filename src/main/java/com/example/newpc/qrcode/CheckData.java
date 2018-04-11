@@ -1,6 +1,8 @@
 package com.example.newpc.qrcode;
 
+
 import java.net.URL;
+
 
 /** Created just to check whether data from QRCode Scanner is URL or not
  *
