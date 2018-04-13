@@ -1,51 +1,59 @@
 package com.example.newpc.qrcode;
 
-
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.app.AlertDialog;
+
 import java.util.List;
 
-import static android.R.attr.id;
+/**
+ * Created to display the result
+ */
 
-public class AlertUrlDialog extends DialogFragment {
+public class AlertResultDialog extends DialogFragment {
     String DataToDisplay;
+    String Link;
+    String Title;
 
-    static AlertUrlDialog newInstance(String Data) {
-        AlertUrlDialog f = new AlertUrlDialog();
+    static AlertResultDialog newInstance(String total,String positives,String link) {
+
+        AlertResultDialog f = new AlertResultDialog();
 
         // Supply data input as an argument.
         Bundle args = new Bundle();
-        args.putString("data", Data);
+        args.putString("total",total);
+        args.putString("positive",positives);
+        args.putString("link",link);
         f.setArguments(args);
 
         return f;
     }
 
-    @Override
-    @NonNull
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        DataToDisplay = getArguments().getString("data");
-        // Using the Builder class for convenient dialog construction
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreateDialog(savedInstanceState);
+
+        DataToDisplay = analyseResult();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.Title);
+        builder.setTitle(Title);
         builder.setMessage(DataToDisplay)
                 .setPositiveButton(R.string.open, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // Open the url
-                        getActivity().finish();
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(DataToDisplay));
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Link));
                         PackageManager packageManager = getActivity().getPackageManager();
                         List<ResolveInfo> activities = packageManager.queryIntentActivities(browserIntent, 0);
                         boolean isIntentSafe = activities.size() > 0;
@@ -58,28 +66,42 @@ public class AlertUrlDialog extends DialogFragment {
                             startActivity(chooser);
 
                         }
+                        getActivity().finish();
+
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
                         getActivity().finish();
-
                     }
                 });
-        builder.setNeutralButton(R.string.validate, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                Intent validateurl = new Intent(getActivity(),ValidateUrlService.class);
-                validateurl.putExtra("url",DataToDisplay);
-                getActivity().startService(validateurl);
-                getActivity().finish();
-            }
-        });
-        // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+    private String analyseResult(){
+        String parsedata = "";
+        String data ="";
+        Link = getArguments().getString("link");
+
+        int total = Integer.parseInt(getArguments().getString("total"));
+        int positive = Integer.parseInt(getArguments().getString("positive"));
+
+        if(positive == 0){
+            Title = "The url is safe to visit";
+            parsedata = "Score" + ":" + positive + "/" + total;
+            data = parsedata + "\n" + Link;
+        }else if (positive <= total/2){
+            Title = "The url seems to contain malicious data! Visit on your caution";
+            parsedata = "Score" + ":" + positive + "/" + total;
+            data = parsedata + "\n" + Link;
+        } else {
+            Title = "The url is directing to a malicious website! Do not visit it";
+            parsedata = "Score" + ":" + positive + "/" + total;
+            data = parsedata + "\n" + Link;
+        }
+
+        return data;
     }
 
     @Override
@@ -100,5 +122,3 @@ public class AlertUrlDialog extends DialogFragment {
         getActivity().finish();
     }
 }
-
-

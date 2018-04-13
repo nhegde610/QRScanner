@@ -38,6 +38,18 @@
                 <action android:name="android.intent.action.RUN" />
             </intent-filter>
         </activity>
+        <activity android:name=".DisplaySuccess"
+            android:theme="@style/CustomDialogTheme">
+            <intent-filter>
+                <action  android:name="android.intent.action.RUN"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".DisplayResult"
+            android:theme="@style/CustomDialogTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.RUN"/>
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".RedirectService"
@@ -47,6 +59,23 @@
                 <action android:name="com.example.newpc.qrcode.MESSAGE_VIA_INTENT"></action>
             </intent-filter>
         </receiver>
+
+        <service android:name=".ValidateUrlService"
+            android:exported="false"></service>
+        <receiver android:name=".ValidateReceiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.newpc.qrcode.VALIDATE_VIA_INTENT"></action>
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".ResultService"
+            android:exported="false"></service>
+        <receiver android:name="ResultReceiver" android:enabled="true" android:exported="false">
+            <intent-filter>
+                <action android:name="com.example.newpc.qrcode.RESULT_VIA_INTENT"></action>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

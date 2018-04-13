@@ -3,6 +3,7 @@ package com.example.newpc.qrcode;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -42,10 +43,12 @@ public class RedirectService extends IntentService {
                 URL url = new URL(link);
                 HttpURLConnection ucon = (HttpURLConnection) url.openConnection();
                 ucon.setInstanceFollowRedirects(false);
+                Log.w("ucon",ucon.toString());
+                int response = ucon.getResponseCode();
+                Log.w("ucon",Integer.toString(response));
                 if (ucon.getResponseCode() == HttpURLConnection.HTTP_MOVED_PERM || ucon.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP) {
                     URL secondURL = new URL(ucon.getHeaderField("Location"));
                     URLConnection conn = secondURL.openConnection();
-                    ucon.disconnect();
                     link = conn.getURL().toString();
                 } else
                     checkDone = false;
