@@ -16,17 +16,17 @@ import static android.content.Context.CLIPBOARD_SERVICE;
  */
 
 public class AlertTextDialog extends DialogFragment {
-    String DataToDisplay;
+    private String DataToDisplay;
 
     static AlertTextDialog newInstance(String Data) {
-        AlertTextDialog f = new AlertTextDialog();
+        AlertTextDialog box = new AlertTextDialog();
 
         // Supply data input as an argument.
         Bundle args = new Bundle();
         args.putString("data", Data);
-        f.setArguments(args);
+        box.setArguments(args);
 
-        return f;
+        return box;
     }
 
     @Override

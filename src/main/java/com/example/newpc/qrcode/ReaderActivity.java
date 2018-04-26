@@ -13,15 +13,15 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class ReaderActivity extends AppCompatActivity {
-    private Button scan_btn;
 
-    boolean isurl = false;
+    private boolean isurl = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
-        scan_btn = (Button) findViewById(R.id.scan_btn);
+        Button scan_btn = (Button) findViewById(R.id.scan_btn);
+        Button scangal_btn = (Button) findViewById(R.id.scangal_btn);
         final Activity activity = this;
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -34,6 +34,13 @@ public class ReaderActivity extends AppCompatActivity {
                 integrator.setBeepEnabled(false);
                 integrator.setBarcodeImageEnabled(false);
                 integrator.initiateScan();
+            }
+        });
+        scangal_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ReaderActivity.this,GalleryReader.class);
+                startActivity(intent);
             }
         });
     }
@@ -76,9 +83,6 @@ public class ReaderActivity extends AppCompatActivity {
     }
 
     private void validate(String Data){
-        if(CheckData.isDataUrl(Data))
-            isurl= true;
-        else
-            isurl = false;
+        isurl = CheckData.isDataUrl(Data);
     }
 }

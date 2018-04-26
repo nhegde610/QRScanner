@@ -7,12 +7,9 @@ import android.support.annotation.Nullable;
 import android.util.JsonReader;
 import android.util.Log;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -27,9 +24,9 @@ public class ResultService extends IntentService{
     public final static String POSITIVE= "positive";
     public final static String TOTAL ="total";
     public final static String LINK="link";
-    public final static String API_KEY= "";
-    public String positives;
-    public String total;
+    private final static String API_KEY= "44b3955c79a11cf79a085fb46f72804c9b9f8350125bf0f44ceadc278e0464f2";
+    private String positives;
+    private String total;
 
     public ResultService(String name) {
         super(name);
@@ -41,8 +38,8 @@ public class ResultService extends IntentService{
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        String scan_id = intent.getStringExtra("scan_id");
-        String link = intent.getStringExtra("link");
+        String scan_id = intent != null ? intent.getStringExtra("scan_id") : null;
+        String link = intent != null ? intent.getStringExtra("link") : null;
 
         try {
 
@@ -109,13 +106,12 @@ public class ResultService extends IntentService{
         }
         while (jsonreader.hasNext()) { // Loop through all keys
             String key = jsonreader.nextName(); // Fetch the next key
-            if (key.equals("positives")) { // Check if desired key
+            //noinspection IfCanBeSwitch
+            if ("positives".equals(key)) { // Check if desired key
                 // Fetch the value as a String
-                String value = jsonreader.nextString();
-                positives = value;
-            } else if (key.equals("total")){
-                String value = jsonreader.nextString();
-                total = value;
+                positives = jsonreader.nextString();
+            } else if ("total".equals(key)){
+                total = jsonreader.nextString();
                 break; // Break out of the loop
             } else {
                 jsonreader.skipValue(); // Skip values of other keys

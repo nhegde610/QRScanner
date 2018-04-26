@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.newpc.qrcode">
+
+    <uses-feature android:name="android.hardware.camera2.CameraCaptureSession"/>
+    <uses-feature android:name="android.net.Network"/>
+    <uses-feature android:name="android.app.AlertDialog"/>
+    <uses-feature android:name="android.app.DialogFragment"/>
+    <uses-feature android:name="android.media.ImageReader"/>
+
+    <uses-sdk android:maxSdkVersion="26"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -11,13 +21,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name=".CaptureActivityPotrait"
             android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden">
+        </activity>
         <activity android:name=".ReaderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.RUN" />
@@ -30,6 +43,12 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GalleryReader" android:theme="@style/CustomDialogTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.RUN"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity android:name=".createDialog"
@@ -53,26 +72,29 @@
 
         <service
             android:name=".RedirectService"
-            android:exported="false"></service>
+            android:exported="false">
+        </service>
         <receiver android:name=".RedirectReceiver" android:enabled="true" android:exported="false">
             <intent-filter>
-                <action android:name="com.example.newpc.qrcode.MESSAGE_VIA_INTENT"></action>
+                <action android:name="com.example.newpc.qrcode.MESSAGE_VIA_INTENT"/>
             </intent-filter>
         </receiver>
 
         <service android:name=".ValidateUrlService"
-            android:exported="false"></service>
+            android:exported="false">
+        </service>
         <receiver android:name=".ValidateReceiver" android:enabled="true" android:exported="false">
             <intent-filter>
-                <action android:name="com.example.newpc.qrcode.VALIDATE_VIA_INTENT"></action>
+                <action android:name="com.example.newpc.qrcode.VALIDATE_VIA_INTENT"/>
             </intent-filter>
         </receiver>
 
         <service android:name=".ResultService"
-            android:exported="false"></service>
+            android:exported="false">
+        </service>
         <receiver android:name="ResultReceiver" android:enabled="true" android:exported="false">
             <intent-filter>
-                <action android:name="com.example.newpc.qrcode.RESULT_VIA_INTENT"></action>
+                <action android:name="com.example.newpc.qrcode.RESULT_VIA_INTENT"/>
             </intent-filter>
         </receiver>
 

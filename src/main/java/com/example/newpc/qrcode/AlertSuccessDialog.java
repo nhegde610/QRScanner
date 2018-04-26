@@ -19,18 +19,18 @@ import java.util.List;
 
 public class AlertSuccessDialog extends DialogFragment {
 
-    String DataToDisplay;
-    String link;
+    private String DataToDisplay;
+    private String link;
     static AlertSuccessDialog newInstance(String Data,String link) {
-        AlertSuccessDialog f = new AlertSuccessDialog();
+        AlertSuccessDialog box = new AlertSuccessDialog();
 
         // Supply data input as an argument.
         Bundle args = new Bundle();
         args.putString("data", Data);
         args.putString("link",link);
-        f.setArguments(args);
+        box.setArguments(args);
 
-        return f;
+        return box;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AlertSuccessDialog extends DialogFragment {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
                 PackageManager packageManager = getActivity().getPackageManager();
                 List<ResolveInfo> activities = packageManager.queryIntentActivities(browserIntent, 0);
-                boolean isIntentSafe = activities.size() > 0;
+                boolean isIntentSafe = !activities.isEmpty();
 
                 String title = getResources().getString(R.string.choose_title);
                 Intent chooser = Intent.createChooser(browserIntent, title);

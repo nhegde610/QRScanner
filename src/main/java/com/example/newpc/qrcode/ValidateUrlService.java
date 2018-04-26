@@ -16,7 +16,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Iterator;
@@ -30,10 +29,10 @@ import javax.net.ssl.HttpsURLConnection;
 public class ValidateUrlService extends IntentService {
 
     public final static String LINK_VALIDATE = "link";
-    public final static String USER_AGENT= "appcode";
-    public String scan_id;
+    private final static String USER_AGENT= "appcode";
+    private String scan_id;
     public final static String SCAN_ID = "scan_id";
-    public final static String API_KEY = "";
+    private final static String API_KEY = "44b3955c79a11cf79a085fb46f72804c9b9f8350125bf0f44ceadc278e0464f2";
 
     public ValidateUrlService(String name) {
         super(name);
@@ -43,10 +42,9 @@ public class ValidateUrlService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        String link = intent.getStringExtra("url");
+        String link = intent != null ? intent.getStringExtra("url") : null;
         try {
 
-            URL url = new URL("https://www.virustotal.com/vtapi/v2/url/scan");
             JSONObject postDataParams = new JSONObject();
             try {
 
@@ -57,6 +55,7 @@ public class ValidateUrlService extends IntentService {
                 e.printStackTrace();
             }
 
+            URL url = new URL("https://www.virustotal.com/vtapi/v2/url/scan");
             HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
             con.setRequestMethod("POST");
             con.setRequestProperty("User-Agent", USER_AGENT);
@@ -97,10 +96,6 @@ public class ValidateUrlService extends IntentService {
                 Log.d("post not work","POST request not worked");
 
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -121,10 +116,9 @@ public class ValidateUrlService extends IntentService {
         }
         while (jsonreader.hasNext()) { // Loop through all keys
             String key = jsonreader.nextName(); // Fetch the next key
-            if (key.equals("scan_id")) { // Check if desired key
+            if ("scan_id".equals(key)) { // Check if desired key
                 // Fetch the value as a String
-                String value = jsonreader.nextString();
-                scan_id = value;
+                scan_id = jsonreader.nextString();
                 break; // Break out of the loop
             } else {
                 jsonreader.skipValue(); // Skip values of other keys
@@ -133,7 +127,7 @@ public class ValidateUrlService extends IntentService {
         jsonreader.close();
     }
 
-    public String getPostDataString(JSONObject params) throws Exception {
+    private String getPostDataString(JSONObject params) throws Exception {
 
         StringBuilder result = new StringBuilder();
         boolean first = true;
@@ -148,10 +142,10 @@ public class ValidateUrlService extends IntentService {
             if (first)
                 first = false;
             else
-                result.append("&");
+                result.append('&');
 
             result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
+            result.append('=');
             result.append(URLEncoder.encode(value.toString(), "UTF-8"));
 
         }

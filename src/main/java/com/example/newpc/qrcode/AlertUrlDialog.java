@@ -9,25 +9,22 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.app.AlertDialog;
 import java.util.List;
 
-import static android.R.attr.id;
-
 public class AlertUrlDialog extends DialogFragment {
-    String DataToDisplay;
+    private String DataToDisplay;
 
     static AlertUrlDialog newInstance(String Data) {
-        AlertUrlDialog f = new AlertUrlDialog();
+        AlertUrlDialog box = new AlertUrlDialog();
 
         // Supply data input as an argument.
         Bundle args = new Bundle();
         args.putString("data", Data);
-        f.setArguments(args);
+        box.setArguments(args);
 
-        return f;
+        return box;
     }
 
     @Override
@@ -48,7 +45,7 @@ public class AlertUrlDialog extends DialogFragment {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(DataToDisplay));
                         PackageManager packageManager = getActivity().getPackageManager();
                         List<ResolveInfo> activities = packageManager.queryIntentActivities(browserIntent, 0);
-                        boolean isIntentSafe = activities.size() > 0;
+                        boolean isIntentSafe = !activities.isEmpty();
 
                         String title = getResources().getString(R.string.choose_title);
                         Intent chooser = Intent.createChooser(browserIntent, title);

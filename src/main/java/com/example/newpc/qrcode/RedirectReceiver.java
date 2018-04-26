@@ -5,13 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 
 /**
  * Created to receive the broadcast from RedirectService
  */
 
 public class RedirectReceiver extends BroadcastReceiver {
-    String url;
 
     public RedirectReceiver() {
 
@@ -20,10 +21,11 @@ public class RedirectReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        url = intent.getStringExtra(RedirectService.URLCreated);
+        String url = intent.getStringExtra(RedirectService.URLCreated);
 
        Intent createdialog = new Intent(context,createDialog.class);
-                createdialog.putExtra("url",url);
+                createdialog.putExtra("url", url);
+                createdialog.addFlags(FLAG_ACTIVITY_NEW_TASK);
        context.startActivity(createdialog);
     }
 }

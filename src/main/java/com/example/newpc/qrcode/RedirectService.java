@@ -4,11 +4,9 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -36,9 +34,9 @@ public class RedirectService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        String link = intent.getStringExtra("url");
-        boolean checkDone = true;
+        String link = intent != null ? intent.getStringExtra("url") : null;
         try {
+            boolean checkDone = true;
             while (checkDone) {
                 URL url = new URL(link);
                 HttpURLConnection ucon = (HttpURLConnection) url.openConnection();
@@ -59,10 +57,6 @@ public class RedirectService extends IntentService {
             broadCastResult.putExtra(URLCreated, link);
             broadCastResult.setAction("com.example.newpc.qrcode.MESSAGE_VIA_INTENT");
             sendBroadcast(broadCastResult);
-
-        } catch (MalformedURLException e) {
-
-            e.printStackTrace();
 
         } catch (IOException e) {
 
