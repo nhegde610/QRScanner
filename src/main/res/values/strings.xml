@@ -11,4 +11,10 @@
     <string name="logo_description">Logo of the app</string>
     <string name="button_scan">Scan QR Code</string>
     <string name="button_image">Scan QR Image</string>
+    <string name="permission_denied">Permission Denied.</string>
+    <string name="submit">Submit</string>
+    <string name="password">Enter the Password</string>
+    <string name="enter">Enter here</string>
+    <string name="generator">Generate QR Code</string>
+    <string name="genpass">Generate with Key</string>
 </resources>

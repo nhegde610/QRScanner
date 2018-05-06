@@ -31,6 +31,13 @@
             android:theme="@style/zxing_CaptureTheme"
             android:windowSoftInputMode="stateAlwaysHidden">
         </activity>
+        <activity android:name=".GeneratorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.RUN"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".ReaderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.RUN" />

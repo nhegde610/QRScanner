@@ -12,9 +12,10 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class ReaderActivity extends AppCompatActivity {
+public class ReaderActivity extends AppCompatActivity implements PasswordInputDialog.OnDialogDismissListener {
 
     private boolean isurl = false;
+    private String DataFromScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class ReaderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_reader);
         Button scan_btn = (Button) findViewById(R.id.scan_btn);
         Button scangal_btn = (Button) findViewById(R.id.scangal_btn);
+        Button genQR_btn = (Button) findViewById(R.id.genQr_btn);
         final Activity activity = this;
         scan_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +45,14 @@ public class ReaderActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        genQR_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(ReaderActivity.this,GeneratorActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -56,15 +66,26 @@ public class ReaderActivity extends AppCompatActivity {
             else {
                     try {
                             super.onActivityResult(requestCode,resultCode,data);
-                            String DataFromScan = result.getContents();
-                            validate(DataFromScan);
-                            if(isurl){
-                                StartRedirectService(DataFromScan);
+                            DataFromScan = result.getContents();
+
+                            String SubDataString = DataFromScan.substring(0,4);
+                            if(SubDataString.equals("ENC;")){
+
+                                DataFromScan = DecryptionData.RemoveEncrypt(DataFromScan);
+                                DialogFragment alertDialogAndroid = new PasswordInputDialog();
+                                alertDialogAndroid.show(getSupportFragmentManager(),"PasswordDialog");
                             }
                             else {
-                                DialogFragment TextFragment = AlertTextDialog.newInstance(DataFromScan);
-                                TextFragment.show(getSupportFragmentManager(), "DataFromScan");
+                                validate(DataFromScan);
+                                if(isurl){
+                                    StartRedirectService(DataFromScan);
+                                }
+                                else {
+                                    DialogFragment TextFragment = AlertTextDialog.newInstance(DataFromScan);
+                                    TextFragment.show(getSupportFragmentManager(), "DataFromScan");
+                                }
                             }
+
                     }catch(Exception e){
                         e.printStackTrace();
                         Toast.makeText(this, result.getContents(),Toast.LENGTH_LONG).show();
@@ -84,5 +105,20 @@ public class ReaderActivity extends AppCompatActivity {
 
     private void validate(String Data){
         isurl = CheckData.isDataUrl(Data);
+    }
+
+    @Override
+    public void onDialogDismissListener(String secret) {
+
+        DataFromScan = DecryptionData.decrypt(DataFromScan,secret);
+
+        validate(DataFromScan);
+        if(isurl){
+            StartRedirectService(DataFromScan);
+        }
+        else {
+            DialogFragment TextFragment = AlertTextDialog.newInstance(DataFromScan);
+            TextFragment.show(getSupportFragmentManager(), "DataFromScan");
+        }
     }
 }

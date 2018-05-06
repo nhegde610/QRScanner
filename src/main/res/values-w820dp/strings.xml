@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="button_scan">Scan QR Code</string>
+    <string name="permission_denied">Permission Denied.</string>
+    <string name="submit">Submit</string>
+    <string name="genpass">Generate with Key</string>
 </resources>
