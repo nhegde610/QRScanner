@@ -15,7 +15,9 @@ public class createDialog extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         String url = getIntent().getStringExtra("url");
-        DialogFragment UrlFragment = AlertUrlDialog.newInstance(url);
+        String redirect = getIntent().getStringExtra("redirect");
+
+        DialogFragment UrlFragment = AlertUrlDialog.newInstance(url,redirect);
         UrlFragment.show(getSupportFragmentManager(),"RedirectUrl");
 
     }

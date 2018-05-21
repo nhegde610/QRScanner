@@ -41,7 +41,6 @@ public class PasswordInputDialog extends DialogFragment {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        //final EditText input = new EditText(getActivity());
 
         builder.setView(inflater.inflate(R.layout.user_input_dialog_box, null))
                 // Add action buttons

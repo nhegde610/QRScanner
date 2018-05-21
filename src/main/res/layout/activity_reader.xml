@@ -14,27 +14,27 @@
         android:layout_height="wrap_content"
         android:text="@string/button_scan"
         android:id="@+id/scan_btn"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/genQr_btn"
         android:layout_alignRight="@+id/scangal_btn"
-        android:layout_alignEnd="@+id/scangal_btn" />
+        android:layout_alignEnd="@+id/scangal_btn"
+        android:layout_marginTop="59dp" />
 
     <Button
+        android:id="@+id/scangal_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_image"
-        android:id="@+id/scangal_btn"
-        android:layout_marginTop="46dp"
         android:layout_below="@+id/scan_btn"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
+        android:text="@string/button_image" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/genQr_btn"
         android:text="@string/generator"
-        android:layout_marginBottom="50dp"
-        android:layout_above="@+id/scan_btn"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="83dp" />
 
 </RelativeLayout>

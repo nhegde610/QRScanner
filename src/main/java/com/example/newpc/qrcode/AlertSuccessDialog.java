@@ -51,7 +51,7 @@ public class AlertSuccessDialog extends DialogFragment {
                         getresult.putExtra("scan_id",DataToDisplay);
                         getresult.putExtra("link",link);
                         getActivity().startService(getresult);
-                        getActivity().finish();
+                        //getActivity().finish();
 
                     }
                 })

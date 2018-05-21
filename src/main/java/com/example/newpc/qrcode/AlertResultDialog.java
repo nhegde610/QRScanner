@@ -63,7 +63,7 @@ public class AlertResultDialog extends DialogFragment {
                             startActivity(chooser);
 
                         }
-                        getActivity().finish();
+                        //getActivity().finish();
 
                     }
                 })
@@ -88,7 +88,7 @@ public class AlertResultDialog extends DialogFragment {
             Title = "The url is safe to visit";
             parsedata = "Score" + ':' + positive + '/' + total;
             data = parsedata + '\n' + Link;
-        }else if (positive <= total/2){
+        }else if (positive <= 4 ){
             Title = "The url seems to contain malicious data! Visit on your caution";
             parsedata = "Score" + ':' + positive + '/' + total;
             data = parsedata + '\n' + Link;

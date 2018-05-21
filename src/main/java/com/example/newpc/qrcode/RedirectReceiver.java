@@ -22,9 +22,11 @@ public class RedirectReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String url = intent.getStringExtra(RedirectService.URLCreated);
+        String redirect = intent.getStringExtra(RedirectService.RedirectCheck);
 
        Intent createdialog = new Intent(context,createDialog.class);
                 createdialog.putExtra("url", url);
+                createdialog.putExtra("redirect",redirect);
                 createdialog.addFlags(FLAG_ACTIVITY_NEW_TASK);
        context.startActivity(createdialog);
     }

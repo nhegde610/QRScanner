@@ -15,13 +15,15 @@ import java.util.List;
 
 public class AlertUrlDialog extends DialogFragment {
     private String DataToDisplay;
+    private String redirect;
 
-    static AlertUrlDialog newInstance(String Data) {
+    static AlertUrlDialog newInstance(String Data,String Redirect) {
         AlertUrlDialog box = new AlertUrlDialog();
 
         // Supply data input as an argument.
         Bundle args = new Bundle();
         args.putString("data", Data);
+        args.putString("redirect",Redirect);
         box.setArguments(args);
 
         return box;
@@ -33,10 +35,15 @@ public class AlertUrlDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         DataToDisplay = getArguments().getString("data");
+        redirect = getArguments().getString("redirect");
         // Using the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.Title);
+        if(redirect.equals("false"))
+            builder.setTitle(R.string.Title);
+        else
+            builder.setTitle(R.string.Redirect);
+
         builder.setMessage(DataToDisplay)
                 .setPositiveButton(R.string.open, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -60,7 +67,7 @@ public class AlertUrlDialog extends DialogFragment {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
-                        getActivity().finish();
+                       getActivity().finish();
 
                     }
                 });
